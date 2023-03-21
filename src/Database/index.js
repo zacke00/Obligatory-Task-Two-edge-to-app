@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const mongoose = require('mongoose');
 const productModel = require('./Model/productModel');
 const productRouting = require('./routes/products');
 const bodyParser = require('body-parser');
 
+app.use(cors());
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use("/products", productRouting);
@@ -71,4 +73,5 @@ app.post('/', async(req, res) => {
     }
 });
 
-app.listen(3000);
+//app.listen(3000);
+app.listen(5000, () => console.log('Server started on port 5000'));
