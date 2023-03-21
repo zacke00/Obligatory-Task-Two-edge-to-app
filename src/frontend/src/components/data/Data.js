@@ -1,4 +1,5 @@
 import { useEffect, useState,React } from "react";
+import "../../assets/styles/css/Data.css";
 
 let products= null;
 let Axis_X_High_value = null;
@@ -32,7 +33,7 @@ function Data() {
             Axis_Z_High_value = product.Axis_Z_high;
             Axis_Z_Low_value = product.Axis_Z_low;
 
-            product.dateTime.split("T")
+            
 
             
             
@@ -47,27 +48,33 @@ function Data() {
             } else if(product.Danger == "No Danger"){
                 danger_level = "lime";
             }
-            if(product.Danger == "Worst Case"){
+            
+                const dateTimeArr = product.DateTime.split("T");
+                const date = dateTimeArr[0];
+                const time = dateTimeArr[1].slice(0,5);
                 return (
                     <div>
-            <section classname="container">
-            <div className="" key={product.id}
-            style={{background: danger_level}}>
-            <h1>Elevator: {product.name}</h1>
-            <p className="Axis_X_High">Highest X: {product.Axis_X_high.toFixed(2)}</p>
-            <p className="Axis_X_Low">Lowest X: {product.Axis_X_low.toFixed(2)}</p>
-            <p className="Axis_Y_High">Highest Y: {product.Axis_Y_high.toFixed(2)}</p>
-            <p className="Axis_Y_Low">Lowest Y: {product.Axis_Y_low.toFixed(2)}</p>
-            <p className="Axis_Z_High">Highest Z: {product.Axis_Z_high.toFixed(2)}</p>
-            <p className="Axis_Z_Low">Lowest Z: {product.Axis_Z_low.toFixed(2)}</p>
-            <p classname="Date_Time">Date : {product.DateTime}</p>
-            <p >Danger level = {product.Danger}</p>
-            </div>
-            </section>
-            </div>
-        );
-            }
-    });  
+                        
+                            <article className="article-product">
+                        <div className="div_container" key={product.id}
+                        style={{background: danger_level}}>
+                        <h1>Elevator: {product.name}</h1>
+                        <p className="Axis_X_High">Highest X: {product.Axis_X_high.toFixed(2)}</p>
+                        <p className="Axis_X_Low">Lowest X: {product.Axis_X_low.toFixed(2)}</p>
+                        <p className="Axis_Y_High">Highest Y: {product.Axis_Y_high.toFixed(2)}</p>
+                        <p className="Axis_Y_Low">Lowest Y: {product.Axis_Y_low.toFixed(2)}</p>
+                        <p className="Axis_Z_High">Highest Z: {product.Axis_Z_high.toFixed(2)}</p>
+                        <p className="Axis_Z_Low">Lowest Z: {product.Axis_Z_low.toFixed(2)}</p>
+                        <p classname="Date_Time">Date : {date} {time}</p>
+                        <p >Danger level = {product.Danger}</p>
+                        </div>
+                        </article>
+                        
+                    </div>
+                );
+            
+        }
+    ); 
 }
   return (
     <div>
