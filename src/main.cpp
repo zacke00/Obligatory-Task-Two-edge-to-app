@@ -43,17 +43,18 @@ const float upperRangeAcceleration = 2.4;
 
 //Danger checking variables
 const char* DangerResultPrint = "";
+int DangerResult = 0;
 //-------------------------------
 
 
 // **Connect to Wi-Fi**
 // WiFi network name and password:
 /*  *CHANGE IF NEEDED*  */
-const char * ssid = "Student";
-const char * password = "Kristiania1914";
+const char * ssid = "Telenor2437tal";
+const char * password = "pgvfheslvafvk";
 
 // Internet address to send POST data to
-const char * api_host = "172.26.80.126";
+const char * api_host = "10.0.0.11";
 const int api_port = 3000;
 const char* api_endpoint = "/";
 //--------------------------------
@@ -165,18 +166,18 @@ void loop() {
   // **Accelometer**
 
   //  Danger levels
-  float DangerFrequency_X_higher = 0;
-  float DangerFrequency_X_lower = 0;
+  static float DangerFrequency_X_higher = 0;
+  static float DangerFrequency_X_lower = 0;
+  
+  static float DangerFrequency_Y_higher = 0;
+  static float DangerFrequency_Y_lower = 0;
+  
+  static float DangerFrequency_Z_Higher = 0;
+  static float DangerFrequency_Z_Lower = 0;
 
-  float DangerFrequency_Y_higher = 0;
-  float DangerFrequency_Y_lower = 0;
-
-  float DangerFrequency_Z_Higher = 0;
-  float DangerFrequency_Z_Lower = 1.1;
-
-  float DangerResult = 0;
+  
   //  Danger_calm = 3
-  //  Danger_Heavy = 5
+  //  Danger_Heavy = 4
   //  Danger_Extreme = 6
   //  Worst_Case = 8
 
@@ -189,7 +190,7 @@ void loop() {
   static float lowest_y_Reading = 0;
   // Z
   static float highest_z_Reading = 0;
-  static float lowest_z_Reading = 0;
+  static float lowest_z_Reading = 1.1;
   // Define variable for the time the reading can occur / 2 secounds
   static unsigned long triggerStart= 0;
   // Flags for printing the highest and lowest readings
@@ -310,7 +311,22 @@ if ((!printedHighestReading || !printedLowestReading) && (
 || lowest_y_Reading < lowerRangeFrequency     // y Frequency
 || lowest_z_Reading < lowerRangeAcceleration  // z Acceleration
 ) && millis() - triggerStart > 1000) {
-  DangerResult = DangerFrequency_X_higher + DangerFrequency_X_lower + DangerFrequency_Y_higher + DangerFrequency_Y_lower + DangerFrequency_Z_Higher + DangerFrequency_Z_Lower;
+  DangerResult = (DangerFrequency_X_higher + DangerFrequency_X_lower + DangerFrequency_Y_higher + DangerFrequency_Y_lower + DangerFrequency_Z_Higher + DangerFrequency_Z_Lower);
+  Serial.println(highest_x_Reading);
+  Serial.print("DangerFrequency_X_higher: ");
+  Serial.println(DangerFrequency_X_higher);
+  Serial.print("DangerFrequency_X_lower: ");
+  Serial.println(DangerFrequency_X_lower);
+  Serial.print("DangerFrequency_Y_higher: ");
+  Serial.println(DangerFrequency_Y_higher);
+  Serial.print("DangerFrequency_Y_lower: ");
+  Serial.println(DangerFrequency_Y_lower);
+  Serial.print("DangerFrequency_Z_Higher: ");
+  Serial.println(DangerFrequency_Z_Higher);
+  Serial.print("DangerFrequency_Z_Lower: ");
+  Serial.println(DangerFrequency_Z_Lower);
+  Serial.print("DangerResult: ");
+  Serial.println(DangerResult);
   //Payload
   doc["name"] = elevatorName;
   doc["address"] = elevatorAddress;
@@ -319,12 +335,14 @@ if ((!printedHighestReading || !printedLowestReading) && (
   doc["Axis_Z_high"] = highest_z_Reading;
   doc["Axis_X_low"] = lowest_x_Reading;
   doc["Axis_Y_low"] = lowest_y_Reading;
-  if (lowest_z_Reading = 1.10)
+  
+  if (lowest_z_Reading == 1.10)
   {
    doc["Axis_Z_low"] = 0; 
   }else {
   doc["Axis_Z_low"] = lowest_z_Reading;
   }
+
   if(DangerResult >= 8){
     DangerResultPrint = "Worst Case";
   }else if (DangerResult >= 6) {
@@ -394,7 +412,7 @@ if ((!printedHighestReading || !printedLowestReading) && (
     //1.1 because it needs to be higher than 1(lowerRangeAcceleration) to not state true for the if statement printing the readings
     lowest_z_Reading = 1.1;
     
-    DangerResult = 0;
+
 
     printedHighestReading = false;
     printedLowestReading = false;

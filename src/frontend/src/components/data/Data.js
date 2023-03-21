@@ -8,7 +8,16 @@ let Axis_Y_High_value = null;
 let Axis_Y_Low_value = null;
 let Axis_Z_High_value = null;
 let Axis_Z_Low_value = null;
-let danger_level= "green";
+let danger_color= "green";
+
+const dangerLevelValues = {
+    "Worst Case": 5,
+    "Extreme": 4,
+    "Heavy": 3,
+    "Calm": 2,
+    "No Danger": 1
+}
+
 
 function Data() {
     const [data, setData] = useState(null);
@@ -16,7 +25,7 @@ function Data() {
     useEffect(() => {
         
         //Date : 2023-03-21T14:05:58.096Z
-        fetch("http://localhost:5000/products")
+        fetch("http://localhost:3000/products")
         .then((res) => res.json())
         .then((data) => setData(data));
     }, []);
@@ -25,7 +34,8 @@ function Data() {
 
         
         
-        products = data.map((product) => {
+        //products = data.sort((a,b) => new Date(b.DateTime) - new Date(a.DateTime)).map((product) => {
+        products = data.sort((a,b) => dangerLevelValues[b.Danger] - dangerLevelValues[a.Danger]).map((product) => {
             Axis_X_High_value = product.Axis_X_high;
             Axis_X_Low_value = product.Axis_X_low;
             Axis_Y_High_value = product.Axis_Y_high;
@@ -38,15 +48,15 @@ function Data() {
             
             
             if (product.Danger == "Worst Case"){
-                danger_level = "red";
+                danger_color = "red";
             } else if (product.Danger == "Extreme"){
-                danger_level = "orange";
+                danger_color = "orange";
             } else if (product.Danger == "Heavy"){
-                danger_level = "yellow";
+                danger_color = "yellow";
             } else if (product.Danger == "Calm"){
-                danger_level = "chartreuse";
+                danger_color = "chartreuse";
             } else if(product.Danger == "No Danger"){
-                danger_level = "lime";
+                danger_color = "lime";
             }
             
                 const dateTimeArr = product.DateTime.split("T");
@@ -57,7 +67,7 @@ function Data() {
                         
                             <article className="article-product">
                         <div className="div_container" key={product.id}
-                        style={{background: danger_level}}>
+                        style={{background: danger_color}}>
                         <h1>Elevator: {product.name}</h1>
                         <p className="Axis_X_High">Highest X: {product.Axis_X_high.toFixed(2)}</p>
                         <p className="Axis_X_Low">Lowest X: {product.Axis_X_low.toFixed(2)}</p>
@@ -77,7 +87,7 @@ function Data() {
     ); 
 }
   return (
-    <div>
+    <div className="Data_Header">
       <h1>Data</h1>
       
         {products}

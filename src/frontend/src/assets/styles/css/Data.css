@@ -2,10 +2,16 @@
     --var--box-shadowing: rgba(53, 72, 91, .07);
 }
 
+.Data_Header {
+    width: 30rem;
+    float: right;
+    margin-top: -20rem;
+}
+
 article.article-product {
     display: flex;
     justify-content: center;
-    align-items: center;
+    overflow: hidden;
     flex-wrap: wrap;
     max-width: 1920px;
 }

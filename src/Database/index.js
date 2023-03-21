@@ -18,10 +18,13 @@ mongoose.connect('mongodb://127.0.0.1:27017')
     .then(() => { console.log("Connected to DB") })
     .catch((err) => { console.log("Error", err) });
 
-app.use(cors({
-    origin: 'http://localhost:5001',
-    methods: ['GET', 'POST']
-}));
+//app.use(cors({
+//    origin: 'http://localhost:3000',
+//    methods: ['GET', 'POST'],
+//    allowedHeaders: ['Content-Type', 'Authorization'],
+//    
+//    credentials: true
+//}));
 
 const products = [];
 
@@ -58,7 +61,6 @@ app.post('/', async(req, res) => {
 
         const product = new productModel({
             name: name,
-            elevatorID: elevatorID,
             address: address,
             Axis_X_high: Axis_X_high,
             Axis_X_low: Axis_X_low,
@@ -78,5 +80,4 @@ app.post('/', async(req, res) => {
     }
 });
 
-//app.listen(3000);
-app.listen(5000, () => console.log('Server started on port 5000'));
+app.listen(3000);
