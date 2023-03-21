@@ -18,6 +18,10 @@ mongoose.connect('mongodb://127.0.0.1:27017')
 
 const products = [];
 
+/**
+ * Start site when entering the API
+ */
+
 app.get('/', function(req, res) {
     res.write('<!DOCTYPE html>')
     res.write('<html style="font-family: Roboto, Arial, sans-serif;">')
@@ -29,21 +33,33 @@ app.get('/', function(req, res) {
     res.end()
 })
 
-
+/**
+ * Post request to add a new product to the database 
+ */
 app.post('/', async(req, res) => {
     try {
         const name = req.body.name;
+
+        const address = req.body.address;
         const Axis_X_high = req.body.Axis_X_high;
         const Axis_X_low = req.body.Axis_X_low;
         const Axis_Y_high = req.body.Axis_Y_high;
         const Axis_Y_low = req.body.Axis_Y_low;
+        const Axis_Z_high = req.body.Axis_Z_high;
+        const Axis_Z_low = req.body.Axis_Z_low;
+        const Danger = req.body.Danger;
 
         const product = new productModel({
             name: name,
+            elevatorID: elevatorID,
+            address: address,
             Axis_X_high: Axis_X_high,
             Axis_X_low: Axis_X_low,
             Axis_Y_high: Axis_Y_high,
             Axis_Y_low: Axis_Y_low,
+            Axis_Z_high: Axis_Z_high,
+            Axis_Z_low: Axis_Z_low,
+            Danger: Danger,
             DateTime: Date.now(),
 
         });
